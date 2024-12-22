@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  font-family: Outfit;
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+
+.rich-text {
+  font-size: 15px;
+  color: #7A7B7D;
+}
+
+.rich-text p{
+  margin-bottom: 20px;
+}
+
+.rich-text h1{
+  font-size: 36px;
+  font-weight: 800;
+  color: #252525;
+  margin-bottom: 20px;
+}
+
+.rich-text h2{
+  font-size: 22px;
+  font-weight: 700;
+  color: #252525;
+  margin-bottom: 20px;
+}
+
+.rich-text h3{
+  font-size: 18px;
+  font-weight: 600;
+  color: #252525;
+  margin-bottom: 10px;
+}
+
+.rich-text h4{
+  font-size: 16px;
+  font-weight: 500;
+  color: #252525;
+  margin-bottom: 20px;
+}
+
+.rich-text h5{
+  font-size: 14px;
+  font-weight: 400;
+  color: #252525;
+  margin-bottom: 20px;
+}
+
+.rich-text h6{
+  font-size: 12px;
+  font-weight: 500;
+  color: #252525;
+  margin-bottom: 20px;
+}
+
+.rich-text strong{
+  font-weight: 700;
+}
+
+.rich-text ol{
+  margin-left: 30px;
+  margin-bottom: 20px;
+  list-style-type: decimal;
+}
+
+.rich-text ul{
+  margin-left: 30px;
+  list-style-type: disc;
+}
+
+.rich-text li{
+  margin-bottom: 8px;
+}
+
+
+/* <p>As a Software Tester, you will play a critical role in ensuring the quality and reliability of our software applications. You will design test cases, execute tests, and collaborate with development teams to identify and resolve defects before product release.</p>
+<h2><strong>Key Responsibilities</strong></h2>
+<ol>
+    <li>Develop and execute test plans and test cases based on software requirements.</li>
+    <li>Identify, document, and track defects using bug tracking tools.</li>
+    <li>Collaborate with developers to resolve issues and improve software quality.</li>
+    <li>Conduct regression testing to ensure existing functionality remains intact.</li>
+    <li>Participate in team meetings to provide insights on product quality and testing status.</li>
+</ol>
+<h2><strong>Skills Required</strong></h2>
+<ol>
+    <li>Experience with manual and automated testing techniques.</li>
+    <li>Familiarity with testing tools (e.g., Selenium, JUnit).</li>
+    <li>Strong analytical and problem-solving skills.</li>
+    <li>Excellent attention to detail and ability to work under tight deadlines.</li>
+    <li>Good communication skills to articulate testing outcomes and challenges.</li>
+</ol>` */
