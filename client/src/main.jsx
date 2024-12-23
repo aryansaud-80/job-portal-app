@@ -4,6 +4,7 @@ import App from './App.jsx';
 import { ClerkProvider } from '@clerk/clerk-react';
 import { BrowserRouter } from 'react-router-dom';
 import { AppContextProvider } from './context/AppContext.jsx';
+import "quill/dist/quill.snow.css";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 

@@ -96,6 +96,12 @@ export const JobLocations = [
     "New York"
 ]
 
+export const JobLevel = [
+    "Beginner Level",
+    "Intermediate Level",
+    "Senior Level"
+]
+
 // Sample data for Manage Jobs Page
 export const manageJobsData = [
     { _id: 1, title: "Full Stack Developer", date: 1729102298497, location: "Bangalore", applicants: 20 },
