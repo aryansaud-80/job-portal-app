@@ -12,6 +12,12 @@ html{
   scroll-behavior: smooth;
 }
 
+::-webkit-scrollbar{
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 
 .rich-text {
   font-size: 15px;
