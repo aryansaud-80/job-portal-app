@@ -20,7 +20,7 @@ export default [
     settings: { react: { version: '18.3' } },
     plugins: {
       react,
-      'react-hooks': reactHooks,
+      'react-hooks': ['react-hooks'],
       'react-refresh': reactRefresh,
     },
     rules: {
@@ -30,7 +30,8 @@ export default [
       ...reactHooks.configs.recommended.rules,
       'react/jsx-no-target-blank': 'off',
       "react/prop-types": "off",
-      "react-hooks/exhaustive-deps": "warn",
+      "react-hooks/rules-of-hooks": 'error',
+      "react-hooks/exhaustive-deps": 'warn',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
