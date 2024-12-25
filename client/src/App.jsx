@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import ApplyJob from './pages/ApplyJob';
 import Applications from './pages/Applications';
@@ -20,6 +20,7 @@ const App = () => {
         <Route path='/apply-job/:id' element={<ApplyJob />} />
         <Route path='/applications' element={<Applications />} />
         <Route path='/dashboard' element={<Dashboard />}>
+          <Route index element={<Navigate to = "manage-job"/>} />
           <Route path='add-job' element={<AddJob />} />
           <Route path='manage-job' element={<ManageJob />} />
           <Route path='view-application' element={<ViewApplication />} />

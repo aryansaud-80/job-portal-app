@@ -24,7 +24,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className='flex w-full gap-3 mx-auto flex-start'>
+      <div className='flex w-full gap-3 mx-auto flex-start max-sm:gap-2'>
         <div className='h-screen border-r-2'>
           <ul className='flex flex-col gap-1'>
             <NavLink

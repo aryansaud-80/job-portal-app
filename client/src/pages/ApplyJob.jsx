@@ -13,7 +13,6 @@ const ApplyJob = () => {
 
   const { jobs } = useContext(AppContext);
 
-
   const [relatedJobs, setRelatedJobs] = useState([]);
 
   const fetchedJob = async () => {
