@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { assets } from '../assets/assets';
 
-const RecruiterLogin = ({setOpenPopup}) => {
+const RecruiterLogin = ({ setOpenPopup }) => {
   const [state, setState] = useState('signup');
   const [recruiterData, setRecruiterData] = useState({
     name: '',
@@ -23,14 +23,7 @@ const RecruiterLogin = ({setOpenPopup}) => {
 
   return (
     <div className='container absolute top-0 left-0 right-0 flex flex-col items-center justify-center h-full px-10 py-10 mx-auto '>
-
-        <div className='absolute z-50 cursor-pointer top-[166px] right-[480px] bg-gray-100 rounded-full size-4 flex items-center justify-center'
-        onClick={()=> setOpenPopup(false)}
-        >
-          <img  className='size-10' src={assets.cross_icon} alt='' />
-        </div>
-      
-      <div className='z-10 flex flex-col items-center gap-4 p-4 bg-white border rounded-lg shadow-2xl'>
+      <div className='relative z-10 flex flex-col items-center gap-4 p-4 bg-white border rounded-lg shadow-2xl'>
         <div className='flex flex-col items-center gap-2'>
           <h1 className='text-2xl font-medium'>Recruiter {state}</h1>
           <p className='text-gray-500 text-md'>
@@ -129,7 +122,9 @@ const RecruiterLogin = ({setOpenPopup}) => {
           )}
 
           {state === 'login' && (
-            <p className='text-sm text-blue-600 cursor-pointer'>Forgot password?</p>
+            <p className='text-sm text-blue-600 cursor-pointer'>
+              Forgot password?
+            </p>
           )}
 
           <button
@@ -163,9 +158,15 @@ const RecruiterLogin = ({setOpenPopup}) => {
             </span>
           </p>
         )}
+
+        <div
+          className='absolute z-50 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer right-3 size-4 top-2'
+          onClick={() => setOpenPopup(false)}
+        >
+          <img className='size-10' src={assets.cross_icon} alt='' />
+        </div>
       </div>
     </div>
-
   );
 };
 export default RecruiterLogin;
