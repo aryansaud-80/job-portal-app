@@ -1,6 +1,8 @@
+import './config/instrument.js';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import * as Sentry from '@sentry/node';
 
 const app = express();
 
@@ -15,5 +17,8 @@ app.use(
   })
 );
 
+
+
+Sentry.setupExpressErrorHandler(app);
 
 export { app };
