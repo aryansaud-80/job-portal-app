@@ -14,7 +14,7 @@ export const webhookController = asyncHandler(async (req, res) => {
       'svix-signature': req.headers['svix-signature'],
     });
 
-    const { data, eventType } = req.body;
+    const { data, type: eventType } = req.body;
 
     switch (eventType) {
       case 'user.created': {
