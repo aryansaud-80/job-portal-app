@@ -3,6 +3,6 @@ import { webhookController } from '../controllers/clerkWebhook.controller.js';
 
 const router = Router();
 
-router.route('').post(webhookController);
+router.route('/webhook').post(webhookController);
 
 export default router;

@@ -22,7 +22,7 @@ export const webhookController = asyncHandler(async (req, res) => {
           data: {
             id: data.id,
             email: data.email_addresses[0].email_address,
-            name: data.first_name || '' + ' ' + data.last_name || '',
+            name: (data.first_name || '') + ' ' + (data.last_name || ''),
             resume: '',
             image: data.profile_image_url,
             createdAt: new Date(data.created_at),
@@ -38,7 +38,7 @@ export const webhookController = asyncHandler(async (req, res) => {
             id: data.id,
           },
           data: {
-            name: data.first_name || '' + ' ' + data.last_name || '',
+            name: (data.first_name || '' )+ ' ' + (data.last_name || ''),
             image: data.profile_image_url,
             email: data.email_addresses[0].email_address,
             updatedAt: new Date(data.updated_at),
