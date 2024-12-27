@@ -3,7 +3,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import * as Sentry from '@sentry/node';
-import webHookRoutes  from './routes/webhook.routes.js';
+import { webhookController } from './controllers/clerkWebhook.controller.js';
 
 const app = express();
 
@@ -18,8 +18,7 @@ app.use(
   })
 );
 
-
-app.use('/clerkWebhook', webHookRoutes);
+app.post('/webhook', webhookController);
 
 Sentry.setupExpressErrorHandler(app);
 
