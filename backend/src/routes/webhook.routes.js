@@ -1,7 +1,8 @@
-import { Routes } from "express";
+import { Router } from 'express';
+import { webhookController } from '../controllers/clerkWebhook.controller.js';
 
-const route = Routes();
+const router = Router();
 
+router.route('').post(webhookController);
 
-
-export default route;
+export default router;

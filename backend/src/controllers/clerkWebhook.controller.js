@@ -2,7 +2,7 @@ import { Webhook } from 'svix';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { ApiError } from '../utils/ApiError.js';
-import prisma from '..config/prisma.js';
+import { prisma } from '../config/prisma.js';
 
 export const webhookController = asyncHandler(async (req, res) => {
   try {
