@@ -114,6 +114,8 @@ export const deleteCompany = asyncHandler(async (req, res) => {
     throw new ApiError(401, 'You are not authorized to delete company!');
   }
 
+  await cloudinaryDelete(req.company?.companyImage_public_id);
+
   await prisma.company.delete({
     where: {
       id: companyId,
@@ -244,7 +246,9 @@ export const updateCompanyImage = asyncHandler(async (req, res) => {
     throw new ApiError(400, 'Error while updating companyImage');
   }
 
-  return res.status(200).json(new ApiResponse(201, 'Company image successfully updated', {  }));
+  return res
+    .status(200)
+    .json(new ApiResponse(201, 'Company image successfully updated', {}));
 });
 
 export const updatedPassword = asyncHandler(async (req, res) => {
@@ -271,7 +275,7 @@ export const updatedPassword = asyncHandler(async (req, res) => {
   const isSame = await comparePassword(newPassword, company.password);
 
   if (isSame) {
-    throw new ApiError(401, "Its same as old password!")
+    throw new ApiError(401, 'Its same as old password!');
   }
 
   const hashedNewPassword = await hashPassword(newPassword);
