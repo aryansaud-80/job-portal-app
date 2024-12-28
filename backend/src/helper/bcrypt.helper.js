@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import { ApiError } from '../utils/ApiError.js';
 
 const hashPassword = async (password) => {
   if (!password) {
@@ -9,7 +10,13 @@ const hashPassword = async (password) => {
 };
 
 const comparePassword = async (password, hashedPassword) => {
-  return await bcrypt.compare(password, hashedPassword);
+  // console.log(password,hashedPassword)
+  if(!password || !hashedPassword){
+    throw new ApiError(400, "required password and hashedPassword")
+  }
+  const isMatch = await bcrypt.compare(password, hashedPassword);
+  // console.log(isMatch);
+  return isMatch;
 };
 
 export { hashPassword, comparePassword };
