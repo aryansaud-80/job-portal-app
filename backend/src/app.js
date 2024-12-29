@@ -5,6 +5,9 @@ import cors from 'cors';
 import * as Sentry from '@sentry/node';
 import { webhookController } from './controllers/clerkWebhook.controller.js';
 import companyRouter from './routes/company.routes.js';
+import jobRouter from './routes/job.routes.js';
+import { clerkMiddleware } from '@clerk/express';
+import userRouter from './routes/user.routes.js';
 
 const app = express();
 
@@ -14,14 +17,16 @@ app.use(express.static('public'));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: '*',
+    origin: process.env.ORIGIN,
     credentials: true,
   })
 );
+app.use(clerkMiddleware());
 
 app.post('/webhook', webhookController);
-
 app.use('/api/v1/company', companyRouter);
+app.use('/api/v1/job', jobRouter);
+app.use('/api/v1/user', userRouter);
 
 Sentry.setupExpressErrorHandler(app);
 
