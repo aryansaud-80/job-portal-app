@@ -2,13 +2,14 @@ import jwt from 'jsonwebtoken';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { prisma } from '../config/prisma.js';
 import { ApiError } from '../utils/ApiError.js';
+import chalk from 'chalk';
 
 export const jwtVerifyToken = asyncHandler(async (req, _, next) => {
   try {
     const token =
       req.cookies.token || req.headers.authorization?.split(' ')[1];
 
-      // console.log(token)
+      // console.log(chalk.bgBlack(token));
 
     if (!token) {
       throw new ApiError(400, 'You are not login! Please login first!!');

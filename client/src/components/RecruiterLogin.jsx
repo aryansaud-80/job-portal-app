@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { assets } from '../assets/assets';
+import axios from 'axios';
+import { AppContext } from '../context/AppContext';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const RecruiterLogin = ({ setOpenPopup }) => {
+  const navigate = useNavigate();
   const [state, setState] = useState('signup');
   const [recruiterData, setRecruiterData] = useState({
     name: '',
@@ -11,14 +16,80 @@ const RecruiterLogin = ({ setOpenPopup }) => {
   const [companyImage, setCompanyImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [nextStep, setNextStep] = useState(false);
+  const {
+    BACKEND_URL,
+    setLoginRecruiterData,
+    setIsRecruiterLoggedIn,
+    setIsLoading,
+    isLoading,
+  } = useContext(AppContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (state === 'signup') {
-      setNextStep(true);
-      return;
+    if (state === 'signup' && !nextStep) {
+      return setNextStep(true);
     }
-    console.log(recruiterData);
+
+    if (state === 'login') {
+      try {
+        setIsLoading(true);
+        axios.defaults.withCredentials = true;
+        const { data } = await axios.post(
+          `${BACKEND_URL}/api/v1/company/login`,
+          {
+            email: recruiterData.email,
+            password: recruiterData.password,
+          }
+        );
+
+        if (data.success) {
+          setLoginRecruiterData(data.data);
+          setIsRecruiterLoggedIn(true);
+          setOpenPopup(false);
+          navigate('/dashboard');
+          toast.success(data.message);
+          setIsLoading(false);
+          localStorage.setItem('isLogin', true);
+        } else {
+          toast.error(data.message);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        toast.error(error.message);
+        setIsLoading(false);
+      }
+    } else {
+      try {
+        setIsLoading(true);
+        axios.defaults.withCredentials = true;
+        const formData = new FormData();
+        formData.append('name', recruiterData.name);
+        formData.append('email', recruiterData.email);
+        formData.append('password', recruiterData.password);
+        formData.append('companyImage', companyImage);
+
+        const { data } = await axios.post(
+          `${BACKEND_URL}/api/v1/company/signup`,
+          formData
+        );
+
+        if (data.success) {
+          setLoginRecruiterData(data.data);
+          setIsRecruiterLoggedIn(true);
+          setOpenPopup(false);
+          navigate('/dashboard');
+          toast.success(data.message);
+          setIsLoading(false);
+          localStorage.setItem('isLogin', true);
+        } else {
+          toast.error(data.message);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        toast.error(error.message);
+        setIsLoading(false);
+      }
+    }
   };
 
   return (
@@ -130,8 +201,15 @@ const RecruiterLogin = ({ setOpenPopup }) => {
           <button
             type='submit'
             className='w-full px-4 py-2 text-white bg-blue-600 rounded-full'
+            disabled={isLoading}
           >
-            {state === 'login' ? 'Login' : nextStep ? 'create account' : 'Next'}
+            {isLoading
+              ? '...'
+              : state === 'login'
+              ? 'Login'
+              : nextStep
+              ? 'create account'
+              : 'Next'}
           </button>
         </form>
 

@@ -5,6 +5,7 @@ import {
   deleteCompany,
   getCompanyData,
   loginCompany,
+  logoutCompany,
   updateCompany,
   updateCompanyImage,
   updatedPassword,
@@ -17,6 +18,7 @@ router.route('/signup').post(upload.single('companyImage'), createCompany);
 router.route('/login').post(loginCompany);
 router.route('/delete-company').delete(jwtVerifyToken, deleteCompany);
 router.route('/update-company').patch(jwtVerifyToken, updateCompany);
+router.route('/logout').post(jwtVerifyToken, logoutCompany);
 router
   .route('/update-companyImage')
   .patch(jwtVerifyToken, upload.single('companyImage'), updateCompanyImage);

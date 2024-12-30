@@ -1,7 +1,7 @@
 import DOMPurify from 'dompurify';
 import { useNavigate } from 'react-router-dom';
 
-const JobCards = ({ job }) => {
+const JobCards = ({ job}) => {
   const purifiedHtml = DOMPurify.sanitize(job.description);
   const navigate = useNavigate();
   return (
@@ -21,8 +21,8 @@ const JobCards = ({ job }) => {
       <p className='mt-4 text-sm text-gray-600' dangerouslySetInnerHTML={{ __html: purifiedHtml.slice(0, 150) }}></p>
 
       <div className='flex gap-4 mt-4 text-sm'>
-        <button onClick={()=>{navigate(`/apply-job/${job._id}`); scrollTo(0,0) }} className='px-6 py-2 text-white bg-blue-600 rounded'>Apply Now</button>
-        <button onClick={()=>{navigate(`/apply-job/${job._id}`); scrollTo(0,0)}} className='px-6 py-2 text-gray-400 border border-gray-400 rounded'>Learn More</button>
+        <button onClick={()=>{navigate(`/apply-job/${job.id}`); scrollTo(0,0) }} className='px-6 py-2 text-white bg-blue-600 rounded'>Apply Now</button>
+        <button onClick={()=>{navigate(`/apply-job/${job.id}`); scrollTo(0,0)}} className='px-6 py-2 text-gray-400 border border-gray-400 rounded'>Learn More</button>
       </div>
     </div>
   );

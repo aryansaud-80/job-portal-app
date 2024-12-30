@@ -1,6 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Quill from 'quill';
 import { JobCategories, JobLevel, JobLocations } from '../assets/assets';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { AppContext } from '../context/AppContext';
 
 const AddJob = () => {
   const [jobTitle, setJobTitle] = useState('');
@@ -8,6 +11,8 @@ const AddJob = () => {
   const [jobLocation, setJobLocation] = useState('Bangalore');
   const [jobLevel, setJobLevel] = useState('Beginner Level');
   const [jobSalary, setJobSalary] = useState();
+
+  const {BACKEND_URL} = useContext(AppContext);
 
   const quillRef = useRef(null);
   const editorRef = useRef(null);
@@ -20,6 +25,34 @@ const AddJob = () => {
       });
     }
   }, []);
+
+  const addJob = async () =>{
+    try {
+      const jobDescription = quillRef.current.root.innerHTML;
+      axios.defaults.withCredentials = true;
+
+      const { data } = await axios.post(`${BACKEND_URL}/api/v1/job/post-job`, {
+        title:jobTitle,
+        description:jobDescription,
+        category:jobCategory,
+        location:jobLocation,
+        level:jobLevel,
+        salary:jobSalary,
+      });
+
+      if (data.success) {
+        toast.success(data.message);
+        setJobTitle('');
+        setJobCategory('Programming');
+        setJobLocation('Bangalore');
+        setJobLevel('Beginner Level');
+        setJobSalary('');
+        quillRef.current.root.innerHTML = '';
+      }
+    } catch (error) {
+      toast.error(error.message || 'An error occurred');
+    }
+  }
 
   return (
     <form className='px-10 py-5 max-md:w-full max-sm:px-0' onSubmit={(e) => e.preventDefault()}>
@@ -96,7 +129,7 @@ const AddJob = () => {
           />
         </div>
 
-        <button className='self-start w-1/4 px-6 py-2 text-white bg-black rounded-md'
+        <button className='self-start w-1/4 px-6 py-2 text-white bg-black rounded-md' onClick ={addJob}
         >Add</button>
       </div>
     </form>

@@ -6,75 +6,98 @@ import { assets } from '../assets/assets';
 import kconvert from 'k-convert';
 import moment from 'moment/moment';
 import JobCards from '../components/JobCards';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const ApplyJob = () => {
   const { id } = useParams();
-  const [jobData, setJobData] = useState(null);
-
-  const { jobs } = useContext(AppContext);
-
+  const { jobs, setIsLoading, isLoading, BACKEND_URL } = useContext(AppContext);
+  const [specificJob, setSpecificJob] = useState(null);
   const [relatedJobs, setRelatedJobs] = useState([]);
 
-  const fetchedJob = async () => {
-    const data = jobs.filter((job) => job._id === id);
-    if (data.length !== 0) {
-      setJobData(data[0]);
+  const fetchedJobById = async () => {
+    try {
+      setIsLoading(true);
+      axios.defaults.withCredentials = true;
+
+      const { data } = await axios.get(
+        `${BACKEND_URL}/api/v1/job/get-job/${id}`
+      );
+
+      if (data.success) {
+        setSpecificJob(data.data);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        toast.error(data.message || 'Failed to fetch job data.');
+      }
+    } catch (error) {
+      setIsLoading(false);
+      toast.error(error.response?.data?.message || 'An error occurred');
     }
   };
 
   useEffect(() => {
-    if (jobs.length > 0) {
-      fetchedJob();
-    }
-  }, [id, jobs]);
+    if (id) fetchedJobById();
+  }, [id]);
 
   useEffect(() => {
-    if (jobData) {
+    if (specificJob && jobs.length > 0) {
       const related = jobs.filter(
         (job) =>
-          job.companyId.name === jobData.companyId.name &&
-          job._id !== jobData._id
+          job.company?.name === specificJob.company?.name &&
+          job.id !== specificJob.id
       );
       setRelatedJobs(related);
     }
-  }, [jobData]);
+  }, [specificJob, jobs]);
 
-  return jobData ? (
+  if (!specificJob?.company) return <Loader />;
+
+  return (
     <div className='flex flex-col w-full h-full px-2 py-3 border'>
       <div className='container flex justify-center px-16 py-24 mx-auto mt-4 border border-blue-300 rounded bg-gradient-to-t from-blue-100 to-blue-50 lg:block max-sm:py-10'>
         <div className='flex flex-col items-start justify-between lg:flex-row lg:items-center'>
           <div className='flex flex-col items-center gap-5'>
             <div className='flex flex-col items-start gap-3 lg:flex-row lg:items-center'>
-              <div className='p-10 bg-white '>
-                <img src={jobData.companyId.image} alt='' />
+              <div className='p-3 bg-white'>
+                {specificJob.company?.companyImage && (
+                  <img
+                    src={specificJob.company.companyImage}
+                    alt=''
+                    className='object-cover rounded-full size-12'
+                  />
+                )}
               </div>
 
               <div className='flex flex-col items-start justify-center gap-2'>
                 <h1 className='text-2xl font-medium sm:text-4xl'>
-                  {jobData.title}
+                  {specificJob.title}
                 </h1>
                 <div className='flex flex-wrap items-center gap-4'>
                   <span className='flex items-center gap-2'>
                     <img src={assets.suitcase_icon} alt='' />
                     <p className='text-gray-500 text-md'>
-                      {jobData.companyId.name}
+                      {specificJob.company?.name}
                     </p>
                   </span>
 
                   <span className='flex items-center gap-2'>
                     <img src={assets.location_icon} alt='' />
-                    <p className='text-gray-500 text-md'>{jobData.location}</p>
+                    <p className='text-gray-500 text-md'>
+                      {specificJob.location}
+                    </p>
                   </span>
 
                   <span className='flex items-center gap-2'>
                     <img src={assets.person_icon} alt='' />
-                    <p className='text-gray-500 text-md'>{jobData.level}</p>
+                    <p className='text-gray-500 text-md'>{specificJob.level}</p>
                   </span>
 
                   <span className='flex items-center gap-2'>
                     <img src={assets.money_icon} alt='' />
                     <p className='text-gray-500 text-md'>
-                      CTC: {kconvert.convertTo(jobData.salary)}
+                      CTC: {kconvert.convertTo(specificJob.salary)}
                     </p>
                   </span>
                 </div>
@@ -83,11 +106,11 @@ const ApplyJob = () => {
           </div>
 
           <div className='flex flex-col items-center gap-2 mt-10 lg:mt-0'>
-            <button className='px-10 py-2 text-sm text-white bg-blue-600 rounded '>
+            <button className='px-10 py-2 text-sm text-white bg-blue-600 rounded'>
               Apply Now
             </button>
             <p className='text-gray-500 text-md'>
-              Posted {moment(jobData.date).fromNow()}
+              Posted {moment(specificJob.date).fromNow()}
             </p>
           </div>
         </div>
@@ -101,7 +124,7 @@ const ApplyJob = () => {
 
           <div
             className='rich-text'
-            dangerouslySetInnerHTML={{ __html: jobData.description }}
+            dangerouslySetInnerHTML={{ __html: specificJob.description }}
           ></div>
 
           <button className='px-4 py-1.5 bg-blue-500 rounded text-white'>
@@ -110,18 +133,19 @@ const ApplyJob = () => {
         </div>
 
         <div className='flex flex-col items-start w-full gap-5 lg:w-2/5'>
-          <h1 className='mb-3 text-2xl font-medium'>More jobs from google</h1>
+          <h1 className='mb-3 text-2xl font-medium'>
+            More jobs from {specificJob.company?.name}
+          </h1>
 
           <div className='grid gap-3 gird-col-1'>
-            {relatedJobs.slice(0, 4).map((job, index) => {
-              return <JobCards key={index} job={job} />;
-            })}
+            {relatedJobs.slice(0, 4).map((job, index) => (
+              <JobCards key={index} job={job} />
+            ))}
           </div>
         </div>
       </div>
     </div>
-  ) : (
-    <Loader />
   );
 };
+
 export default ApplyJob;

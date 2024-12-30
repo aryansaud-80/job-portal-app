@@ -8,7 +8,7 @@ import chalk from 'chalk';
 export const postJob = asyncHandler(async (req, res) => {
   const { title, description, category, location, level, salary } = req.body;
 
-  console.log({ title, description, category, location, level, salary });
+  // console.log({ title, description, category, location, level, salary });
 
   if (
     [title, description, category, location, level, salary].some(
@@ -112,6 +112,8 @@ export const getJobById = asyncHandler(async (req, res) => {
       },
     },
   });
+
+  // console.log(chalk.blue(JSON.stringify(job)));
 
   if (!job) {
     throw new ApiError(400, 'Cannot get job with the id');

@@ -4,10 +4,12 @@ import { assets, JobCategories, JobLocations } from '../assets/assets';
 import FilterCategories from './FilterCategories';
 import FilterLocation from './FilterLocation';
 import JobCards from './JobCards';
+import axios from 'axios';
 
 const JobListing = () => {
-  const { isSearched, searchFilter, setSearchFilter, jobs } =
+  const { isSearched, searchFilter, setSearchFilter, jobs, setJobs } =
     useContext(AppContext);
+    // console.log(jobs);
   const [page, setPage] = useState(1);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const handlePage = (type) => {

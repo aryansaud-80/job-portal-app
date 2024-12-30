@@ -9,7 +9,7 @@ const Applications = () => {
 
 
 
-  console.log(resume);
+  // console.log(resume);
 
   return (
     <div className='container h-full px-10 py-10 mx-auto'>

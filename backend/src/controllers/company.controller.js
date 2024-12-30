@@ -58,10 +58,22 @@ export const createCompany = asyncHandler(async (req, res) => {
 
     const token = await generateCookie(newCompany.id);
 
+    const companyWithoutPassword = {
+      ...newCompany,
+      password: undefined,
+      companyImage_public_id: undefined,
+    };
+
     return res
       .status(201)
       .cookie('token', token.token, token.cookieOptions)
-      .json(new ApiResponse(201, 'Company created successfully', newCompany));
+      .json(
+        new ApiResponse(
+          201,
+          'Company created successfully',
+          companyWithoutPassword
+        )
+      );
   } catch (error) {
     await cloudinaryDelete(companyImage?.public_id);
     // console.error(chalk.yellow(error));
@@ -101,10 +113,55 @@ export const loginCompany = asyncHandler(async (req, res) => {
 
   const token = await generateCookie(company.id);
 
+  const companyWithoutPassword = {
+    ...company,
+    password: undefined,
+    companyImage_public_id: undefined,
+  };
+
   return res
     .status(200)
     .cookie('token', token.token, token.cookieOptions)
-    .json(new ApiResponse(200, 'Login successful', company));
+    .json(new ApiResponse(200, 'Login successful', companyWithoutPassword));
+});
+
+export const logoutCompany = asyncHandler(async (req, res) => {
+  const companyId = req.company?.id;
+
+  if (!companyId) {
+    throw new ApiError(401, 'You are not authorized to logout!');
+  }
+
+  const company = await prisma.company.findUnique({
+    where: {
+      id: companyId,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      companyImage: true,
+    },
+  });
+
+  if (!company) {
+    throw new ApiError(401, 'Company not found!');
+  }
+
+  if (companyId !== company.id) {
+    throw new ApiError(401, 'You are not authorized to logout!');
+  }
+
+  const cookieOptions = {
+    httpOnly: true,
+    expires: Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000,
+    secure: process.env.NODE_ENV === 'production',
+  };
+
+  return res
+    .status(200)
+    .clearCookie('token', cookieOptions)
+    .json(new ApiResponse(200, 'Logout successful', company));
 });
 
 export const deleteCompany = asyncHandler(async (req, res) => {
@@ -128,11 +185,11 @@ export const deleteCompany = asyncHandler(async (req, res) => {
 });
 
 export const getCompanyData = asyncHandler(async (req, res) => {
-  console.log('Request Object:', req);
+  // console.log('Request Object:', req);
   const companyId = req.company?.id;
 
   if (!companyId) {
-    console.log(req);
+    // console.log(req);
     throw new ApiError(402, 'You are not authorized! Please login first!');
   }
 
