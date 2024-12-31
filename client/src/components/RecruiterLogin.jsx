@@ -55,7 +55,7 @@ const RecruiterLogin = ({ setOpenPopup }) => {
           setIsLoading(false);
         }
       } catch (error) {
-        toast.error(error.message);
+        toast.error("Invalid credentials. Please try again.");
         setIsLoading(false);
       }
     } else {
@@ -86,7 +86,7 @@ const RecruiterLogin = ({ setOpenPopup }) => {
           setIsLoading(false);
         }
       } catch (error) {
-        toast.error(error.message);
+        toast.error("Couldn't sign up. Please try again.");
         setIsLoading(false);
       }
     }

@@ -29,6 +29,8 @@ export const getUserData = asyncHandler(async (req, res) => {
 export const applyJob = asyncHandler(async (req, res) => {
   const userId = req.auth?.userId;
 
+  // console.log(userId);
+
   if (!userId) {
     throw new ApiError(400, 'You need to provide userId!');
   }
@@ -55,6 +57,8 @@ export const applyJob = asyncHandler(async (req, res) => {
     },
   });
 
+  // console.log(user);
+
   if (!user) {
     throw new ApiError(400, 'Cannot get user with the id');
   }
@@ -63,7 +67,6 @@ export const applyJob = asyncHandler(async (req, res) => {
     data: {
       userId: user.id,
       jobId: job.id,
-      status: 'pending',
       appliedDate: new Date().toISOString(),
     },
   });

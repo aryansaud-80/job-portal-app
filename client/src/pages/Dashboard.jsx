@@ -1,9 +1,10 @@
-import { Outlet, useNavigate, NavLink} from 'react-router-dom';
+import { Outlet, useNavigate, NavLink } from 'react-router-dom';
 import { assets } from '../assets/assets';
-import { useContext} from 'react';
+import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import Loader from '../components/Loader';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Dashboard = () => {
       axios.defaults.withCredentials = true;
       const { data } = await axios.post(`${BACKEND_URL}/api/v1/company/logout`);
 
-      console.log(data);
+      // console.log(data);
       if (data.success) {
         navigate('/');
         setLoginRecruiterData({});
@@ -132,7 +133,6 @@ const Dashboard = () => {
             </NavLink>
           </ul>
         </div>
-
         <Outlet />
       </div>
     </>

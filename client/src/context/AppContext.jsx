@@ -45,7 +45,7 @@ const AppContextProvider = (props) => {
 
   const getLoginStatusFromLocalStorage = () => {
     const isLogin = localStorage.getItem('isLogin');
-    console.log(isLogin);
+    // console.log(isLogin);
     if (isLogin) {
       setIsRecruiterLoggedIn(true);
     }

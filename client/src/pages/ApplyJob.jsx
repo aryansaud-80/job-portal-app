@@ -14,6 +14,7 @@ const ApplyJob = () => {
   const { jobs, setIsLoading, isLoading, BACKEND_URL } = useContext(AppContext);
   const [specificJob, setSpecificJob] = useState(null);
   const [relatedJobs, setRelatedJobs] = useState([]);
+  const [isApplied, setIsApplied] = useState(false);
 
   const fetchedJobById = async () => {
     try {
@@ -33,6 +34,22 @@ const ApplyJob = () => {
       }
     } catch (error) {
       setIsLoading(false);
+      toast.error(error.response?.data?.message || 'An error occurred');
+    }
+  };
+
+  const applyForJob = async () => {
+    try {
+      axios.defaults.withCredentials = true;
+      const { data } = await axios.post(
+        `${BACKEND_URL}/api/v1/user/apply-job/${id}`
+      );
+
+      if (data.success) {
+        setIsApplied(true);
+        toast.success(data.message);
+      }
+    } catch (error) {
       toast.error(error.response?.data?.message || 'An error occurred');
     }
   };
@@ -106,8 +123,12 @@ const ApplyJob = () => {
           </div>
 
           <div className='flex flex-col items-center gap-2 mt-10 lg:mt-0'>
-            <button className='px-10 py-2 text-sm text-white bg-blue-600 rounded'>
-              Apply Now
+            <button
+              className='px-10 py-2 text-sm text-white bg-blue-600 rounded disabled:opacity-50'
+              onClick={applyForJob}
+              disabled={isApplied}
+            >
+              {isApplied ? 'Applied' : 'Apply Now'}
             </button>
             <p className='text-gray-500 text-md'>
               Posted {moment(specificJob.date).fromNow()}
@@ -127,8 +148,12 @@ const ApplyJob = () => {
             dangerouslySetInnerHTML={{ __html: specificJob.description }}
           ></div>
 
-          <button className='px-4 py-1.5 bg-blue-500 rounded text-white'>
-            Apply Now
+          <button
+            className='px-4 py-1.5 bg-blue-500 rounded text-white disabled:opacity-50'
+            onClick={applyForJob}
+            disabled={isApplied}
+          >
+            {isApplied ? 'Applied' : 'Apply Now'}
           </button>
         </div>
 

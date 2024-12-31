@@ -7,7 +7,7 @@ import JobCards from './JobCards';
 import axios from 'axios';
 
 const JobListing = () => {
-  const { isSearched, searchFilter, setSearchFilter, jobs, setJobs } =
+  const { isSearched, searchFilter, setSearchFilter, jobs } =
     useContext(AppContext);
     // console.log(jobs);
   const [page, setPage] = useState(1);

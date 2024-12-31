@@ -2,7 +2,6 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { prisma } from '../config/prisma.js';
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
-import { compare } from 'bcrypt';
 import chalk from 'chalk';
 
 export const postJob = asyncHandler(async (req, res) => {
@@ -257,20 +256,24 @@ export const getCompanyJobApplicants = asyncHandler(async (req, res) => {
     throw new ApiError(400, 'Cannot find the company');
   }
 
-  const jobs = await prisma.job.findMany({
+  const jobs = await prisma.company.findMany({
     where: {
-      companyId: companyId,
+      id: companyId,
     },
     include: {
-      applicants: {
+      jobs: {
         include: {
-          user: {
-            select: {
-              id: true,
-              email: true,
-              name: true,
-              image: true,
-              resume: true,
+          applications: {
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  email: true,
+                  name: true,
+                  image: true,
+                  resume: true,
+                },
+              },
             },
           },
         },
@@ -279,7 +282,7 @@ export const getCompanyJobApplicants = asyncHandler(async (req, res) => {
   });
 
   if (jobs.length < 1) {
-    throw new ApiError(400, 'Cannot get the jobs Applicants');
+    return res.status(400).json(new ApiResponse(400, 'Cannot get the jobs'));
   }
 
   return res

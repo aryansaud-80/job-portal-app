@@ -1,12 +1,48 @@
-import { useState } from 'react';
-import { assets, viewApplicationsPageData } from '../assets/assets';
+import { useContext, useEffect, useState } from 'react';
+import { assets } from '../assets/assets';
+import axios from 'axios';
+import { AppContext } from '../context/AppContext';
+import { toast } from 'react-toastify';
+import Loader from './Loader';
 
 const ViewApplication = () => {
   const [applicationStatus, setApplicationStatus] = useState({});
+  const [viewApplicationsPageData, setViewApplicationsPageData] = useState([]);
+
+  const { BACKEND_URL, setIsLoading, isLoading } = useContext(AppContext);
 
   const handleStatus = (index, status) => {
     setApplicationStatus((prev) => ({ ...prev, [index]: status }));
   };
+
+  const fetchViewApplicationsPageData = async () => {
+    try {
+      setIsLoading(true);
+      axios.defaults.withCredentials = true;
+
+      const { data } = await axios.get(
+        `${BACKEND_URL}/api/v1/job/getCompanyJobsApplicants`
+      );
+
+      console.log(data);
+
+      if (data.success) {
+        setViewApplicationsPageData(data.data);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      setIsLoading(false);
+      toast.error(error.response?.data.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchViewApplicationsPageData();
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className='flex items-center justify-center h-full max-sm:w-full'>
@@ -30,6 +66,7 @@ const ViewApplication = () => {
               </tr>
             </thead>
 
+            {/* FIXME: NEED TO FIX THIS  */}
             <tbody className='bg-white'>
               {viewApplicationsPageData.map((job, index) => {
                 const status = applicationStatus[index] || '';
