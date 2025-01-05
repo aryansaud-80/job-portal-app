@@ -14,6 +14,7 @@ const AppContextProvider = (props) => {
   const [jobs, setJobs] = useState([]);
   const [loginRecruiterData, setLoginRecruiterData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
 
   const fetchJobs = async () => {
     try {
@@ -24,7 +25,7 @@ const AppContextProvider = (props) => {
         setJobs(data.data);
       }
     } catch (error) {
-      console.log(error?.response?.data?.message || 'An error occurred'); ;
+      console.log(error?.response?.data?.message || 'An error occurred');
     }
   };
 
@@ -43,16 +44,15 @@ const AppContextProvider = (props) => {
     }
   };
 
-  const getLoginStatusFromLocalStorage = () => {
+  useEffect(() => {
     const isLogin = localStorage.getItem('isLogin');
     // console.log(isLogin);
-    if (isLogin) {
+    if (isLogin === 'true') {
       setIsRecruiterLoggedIn(true);
+    } else {
+      setIsRecruiterLoggedIn(false);
     }
-  };
-
-  useEffect(() => {
-    getLoginStatusFromLocalStorage();
+    setIsLoaded(false);
   }, []);
 
   useEffect(() => {
@@ -79,6 +79,7 @@ const AppContextProvider = (props) => {
     setIsRecruiterLoggedIn,
     isLoading,
     setIsLoading,
+    isLoaded,
   };
 
   return (

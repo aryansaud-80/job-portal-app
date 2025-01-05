@@ -3,10 +3,16 @@ import { AppContext } from '../context/AppContext';
 import { Navigate } from 'react-router-dom';
 
 const PrivateRoute = ({ children }) => {
-  const { isRecruiterLoggedIn } = useContext(AppContext);
+  const { isRecruiterLoggedIn, isLoaded } = useContext(AppContext);
 
-  if (!isRecruiterLoggedIn) {
-    return <Navigate to={'/'} />;
+  // console.log(isRecruiterLoggedIn);
+
+  if (isLoaded) {
+    return null;
+  }
+
+  if (isRecruiterLoggedIn !== true) {
+    return <Navigate to='/' />;
   }
   return children;
 };

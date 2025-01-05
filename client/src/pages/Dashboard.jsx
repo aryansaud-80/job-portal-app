@@ -4,7 +4,6 @@ import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import Loader from '../components/Loader';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -133,6 +132,7 @@ const Dashboard = () => {
             </NavLink>
           </ul>
         </div>
+
         <Outlet />
       </div>
     </>

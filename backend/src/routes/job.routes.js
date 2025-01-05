@@ -7,6 +7,7 @@ import {
   getCompanyPostedJob,
   getJobById,
   postJob,
+  verifyApplication,
 } from '../controllers/job.controller.js';
 import { jwtVerifyToken } from '../middlewares/auth.helper.js';
 
@@ -23,5 +24,6 @@ router
   .route('/getCompanyJobsApplicants')
   .get(jwtVerifyToken, getCompanyJobApplicants);
 router.route('/getCompanyPostedJobs').get(jwtVerifyToken, getCompanyPostedJob);
+router.route('/verifyApplicant').patch(jwtVerifyToken, verifyApplication);
 
 export default router;

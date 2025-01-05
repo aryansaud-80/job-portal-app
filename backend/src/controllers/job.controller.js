@@ -352,3 +352,57 @@ export const getCompanyPostedJob = asyncHandler(async (req, res) => {
       )
     );
 });
+
+export const verifyApplication = asyncHandler(async (req, res) => {
+  const { applicationId, applicationStatus } = req.body;
+
+  if (!applicationId) {
+    throw new ApiError(400, 'Required application id!');
+  }
+
+  if (
+    !applicationStatus ||
+    !['accepted', 'rejected'].includes(applicationStatus.toLowerCase())
+  ) {
+    throw new ApiError(400, 'Required application status!');
+  }
+
+  const companyId = req.company?.id;
+
+  if (!companyId) {
+    throw new ApiError(400, 'You are not authorized please login first!');
+  }
+
+  const company = await prisma.company.findUnique({
+    where: {
+      id: companyId,
+    },
+  });
+
+  if (!company) {
+    throw new ApiError(400, 'Cannot find the company!');
+  }
+
+  const application = await prisma.application.update({
+    where: {
+      id: applicationId,
+    },
+    data: {
+      status: applicationStatus.toLowerCase(),
+    },
+  });
+
+  if (!application) {
+    throw new ApiError(400, 'Cannot find the application with the id');
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        'Successfully updated application status',
+        application
+      )
+    );
+});
