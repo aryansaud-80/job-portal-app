@@ -1,13 +1,43 @@
-import { useState } from 'react';
-import { assets, jobsApplied } from '../assets/assets';
+import { useContext, useEffect, useState } from 'react';
+import { assets } from '../assets/assets';
 import moment from 'moment';
+import axios from 'axios';
+import { AppContext } from '../context/AppContext';
+import { toast } from 'react-toastify';
 
 const Applications = () => {
   const [isEdit, setIsEdit] = useState(true);
   const [resume, setResume] = useState(null);
+  const [jobsApplied, setJobsApplied] = useState([]);
 
+  const { BACKEND_URL, isLoading, setIsLoading } = useContext(AppContext);
 
+  const getUserApplications = async () => {
+    try {
+      setIsLoading(true);
+      axios.defaults.withCredentials = true;
 
+      const { data } = await axios.get(
+        `${BACKEND_URL}/api/v1/user/get-userApplications`
+      );
+
+      console.log(data);
+
+      if (data.success) {
+        setJobsApplied(data.data);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getUserApplications();
+  }, []);
 
   // console.log(resume);
 

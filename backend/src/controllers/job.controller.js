@@ -282,7 +282,9 @@ export const getCompanyJobApplicants = asyncHandler(async (req, res) => {
   });
 
   if (jobs.length < 1) {
-    return res.status(400).json(new ApiResponse(400, 'Cannot get the jobs'));
+    return res
+      .status(400)
+      .json(new ApiResponse(400, 'Cannot get the jobs', {}));
   }
 
   return res

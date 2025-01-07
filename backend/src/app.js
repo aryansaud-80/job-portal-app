@@ -23,7 +23,8 @@ app.use(
 );
 app.use(
   clerkMiddleware({
-    apiKey: process.env.CLERK_SECRET_API_KEY,
+    apiKey: process.env.CLERK_PUBLISHABLE_KEY,
+    frontendApiEndpoint: process.env.CLERK_FRONTEND_API_ENDPOINT,
   })
 );
 
