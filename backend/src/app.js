@@ -22,10 +22,14 @@ app.use(
   })
 );
 app.use(
+<<<<<<< HEAD
   clerkMiddleware({
     apiKey: process.env.CLERK_PUBLISHABLE_KEY,
     frontendApiEndpoint: process.env.CLERK_FRONTEND_API_ENDPOINT,
   })
+=======
+  clerkMiddleware()
+>>>>>>> 0dfb3c22ee0b1e0b0d27dc611bf89bc00010d77e
 );
 
 app.post('/webhook', webhookController);
