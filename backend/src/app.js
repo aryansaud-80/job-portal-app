@@ -22,10 +22,7 @@ app.use(
   })
 );
 app.use(
-  clerkMiddleware({
-    apiKey: process.env.CLERK_SECRET_API_KEY,
-    publishablekey: process.env.CLERK_PUBLISHABLE_KEY,
-  })
+  clerkMiddleware()
 );
 
 app.post('/webhook', webhookController);
