@@ -21,9 +21,11 @@ app.use(
     credentials: true,
   })
 );
-app.use(clerkMiddleware({
-  apiKey: process.env.CLERK_API_KEY,
-}));
+app.use(
+  clerkMiddleware({
+    apiKey: process.env.CLERK_API_KEY,
+  })
+);
 
 app.post('/webhook', webhookController);
 app.use('/api/v1/company', companyRouter);

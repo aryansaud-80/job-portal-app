@@ -40,7 +40,7 @@ const AppContextProvider = (props) => {
         setLoginRecruiterData(data.data);
       }
     } catch (error) {
-      console.log(error.response.data.message);
+      console.log(error.message);
     }
   };
 
@@ -50,7 +50,7 @@ const AppContextProvider = (props) => {
   useEffect(() => {
     const isLogin = localStorage.getItem('isLogin');
     // console.log(isLogin);
-    if (isLogin === 'true' ) {
+    if (isLogin === 'true') {
       setIsRecruiterLoggedIn(true);
     } else {
       setIsRecruiterLoggedIn(false);
