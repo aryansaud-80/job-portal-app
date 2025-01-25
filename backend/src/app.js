@@ -23,7 +23,6 @@ app.use(
 );
 app.use(clerkMiddleware({
   apiKey: process.env.CLERK_API_KEY,
-  clientApi: process.env.CLERK_FRONTEND_API,
 }));
 
 app.post('/webhook', webhookController);
